@@ -12,7 +12,7 @@ intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.command()
-async def rule(ctx: commands.Context, number: int):
+async def rule(ctx: commands.Context, number: str):
     guild = ctx.guild
     rules_channel = guild.rules_channel
 
@@ -26,14 +26,14 @@ async def rule(ctx: commands.Context, number: int):
     async for message in rules_channel.history(limit=100):
         content = message.content.strip()
         
-        if content.startswith(f"{number}"):
-            await ctx.send(f"**Rule {number}:**\n`{content[len(f"{number}"):]}`")
+        if content.startswith(f"{number}.") or content.startswith(f"{number} "):
+            await ctx.send(f"**Rule {number}:**\n`{content[len(f"{number}."):].strip()}`")
             return
 
         elif content.lower().startswith(f"rule {number}"):
             await ctx.send(f"**Rule {number}:**\n`{content[len(f"rule {number}"):].strip()}`")
             return
 
-    await ctx.send(f"Rule {number} not found in {rules_channel.mention}.")
+    await ctx.send(f"Rule {number} was not found in {rules_channel.mention}.")
 
 bot.run(TOKEN)
