@@ -1,9 +1,7 @@
-from keep_alive import app
 from discord.ext import commands
 import discord
 import dotenv
 import os
-
 
 dotenv.load_dotenv()
 TOKEN = os.getenv("TOKEN")
