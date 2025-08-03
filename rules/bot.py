@@ -36,4 +36,23 @@ async def rule(ctx: commands.Context, number):
 
     await ctx.send(f"Rule {number} was not found in {rules_channel.mention}.")
 
+@bot.command()
+async def rules(ctx: commands.Context):
+    guild = ctx.guild
+    rules_channel = guild.rules_channel
+
+    if rules_channel is None:
+        rules_channel = discord.utils.get(guild.text_channels, name="rules")
+
+    if not rules_channel:
+        await ctx.send("Rules channel not found.")
+        return
+
+    rules_msg = '```json\n'
+    async for message in rules_channel.history(limit=100, oldest_first=True):
+        content = message.content.strip()
+        rules_msg += content + '\n'
+    rules_msg += '```'
+    await ctx.send(rules_msg)
+
 bot.run(TOKEN)
