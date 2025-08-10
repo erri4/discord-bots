@@ -55,4 +55,18 @@ async def rules(ctx: commands.Context):
     rules_msg += '```'
     await ctx.send(rules_msg)
 
+@bot.command()
+async def ynot(ctx: commands.Context):
+    async for msg in ctx.channel.history(limit=50):
+        if msg.content.startswith("!ynot"):
+            await msg.delete()
+            await ctx.send("because why not?")
+            return
+        
+@bot.command()
+async def clean(ctx: commands.Context):
+    async for msg in ctx.channel.history(limit=100):
+        if msg.content.startswith("!") or msg.author.id == 1400924541663973386:
+            await msg.delete()
+
 bot.run(TOKEN)
